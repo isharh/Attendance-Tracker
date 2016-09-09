@@ -1,0 +1,78 @@
+<head>
+  <title>trackr</title>
+</head>
+<body>
+  <h1 align="center"><b><u>Driver Attendance Tracker</u></b></h1>
+  <ul>
+    <li><a href="#" class="calendar">Calendar</a></li>
+    <li><a href="#" class="log">Log</a></li>
+  </ul>
+  {{> Template.dynamic template=template_name }}
+</body>
+
+
+<template name="calendar">
+<h1 align="center"> Mark Driver Attendance </h1>
+<p align="center">( Click on the day to mark the driver Present/ Absent )</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-8">
+        <div id="calendar">
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+    </div>
+  </div>
+   <div id="fullCalModal" class="modal fade">
+    
+<!-- In Case Present, update in time out time -->
+<div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                <h4 id="modalTitle" class="modal-title">Mark Attendance</h4>
+            </div>
+            <div class="modal-body">
+           
+            {{#autoForm collection="Attendance" type="insert" id="ModalInputsForm"}}
+            {{> afQuickField name="title" id="status" options="allowed" noselect=true}}
+            {{#if afFieldValueIs name="title" value="Present"}}
+            {{> afQuickField name="start" type="bootstrap-datetimepicker"}}
+            {{> afQuickField name="end" type="bootstrap-datetimepicker"}}
+              {{/if}}
+              <div class="modal-footer">
+              <a href="#" id="cancel" class="btn" data-dismiss="modal" >Cancel</a>
+              <a href="#" id="submitButton" type="submit" class="btn btn-primary save">OK</a>
+            </div>
+            {{/autoForm}}
+            </div>            
+        </div>
+    </div>
+</div>
+</template>
+
+<template name="log">
+
+  <h3 align="center">Number of days the driver was present: {{p_items}}</h3> 
+  <h3 align="center">Number of days  the driver was absent: {{a_items}}</h3> <br>
+  <h1 align="center">View Driver Attendance Log</h1>
+  <table align="center" style="width: 70%">
+    <tr>
+      <th> Status </th>
+      <th> Date </th>
+      <th> In Time </th>
+      <th> Out Time </th>
+    </tr>
+    {{#each all_items}}
+    <tr>
+      <td>{{title}}</td>
+      <td>{{timeFormat start "YYYY-MM-DD"}}</td>
+      <td>{{timeFormat2 start "hh:mm a"}}</td>
+      <td>{{timeFormat2 end "hh:mm a"}}</td>
+    </tr>
+    {{/each}}
+  </table>
+</template>
